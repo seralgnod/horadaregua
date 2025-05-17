@@ -1,13 +1,13 @@
 Backend - Hora da Régua
-O backend do Hora da Régua é uma API REST construída com NestJS, utilizando Sequelize com SQLite para persistência de dados, autenticação com JWT e Passport, e validação com TypeScript.
+O backend do Hora da Régua é uma API REST construída com NestJS, utilizando Sequelize com SQLite para persistência de dados, autenticação com JWT e Passport, e validação com TypeScript. Configurado com ESLint e Prettier para linting e formatação.
 Tecnologias
 
-NestJS: 10.4.x
+NestJS: 10.4.16
 Sequelize: 6.37.7
 SQLite: 5.1.7
-JWT: Autenticação com @nestjs/jwt@11.0.0
-Passport: @nestjs/passport@11.0.0
-TypeScript: 5.8.3
+JWT: Autenticação com @nestjs/jwt@10.2.0
+Passport: @nestjs/passport@10.0.3
+TypeScript: 5.6.3
 Node.js: 20.19.2
 
 Pré-requisitos
@@ -21,28 +21,21 @@ Instalação
 Navegue até o diretório do backend:
 cd backend
 
-
 Instale as dependências:
 npm install
 
-
 Configure o arquivo .env:
 echo JWT_SECRET=sua-chave-secreta-muito-longa-e-unica-1234567890 > .env
-
-
 
 Executando o Backend
 
 Inicie o servidor em modo de desenvolvimento:
 npm run start:dev
 
-
 A API estará disponível em http://localhost:3000.
 
 Verifique se o banco de dados SQLite (database.sqlite) foi criado:
 dir
-
-
 
 Scripts Disponíveis
 
@@ -51,12 +44,14 @@ Formatar código: npm run format
 Iniciar em produção: npm run start:prod
 Executar testes: npm run test
 Lint: npm run lint
+Lint com correção: npm run lint:fix
 
 Estrutura do Código
 backend/
 ├── src/
 │   ├── auth/           # Módulo de autenticação (JWT, Passport)
 │   ├── app.module.ts   # Módulo principal
+│   ├── app.controller.ts # Controlador inicial
 │   ├── main.ts         # Entrada da aplicação
 ├── database.sqlite      # Banco de dados SQLite
 ├── .env                # Variáveis de ambiente
@@ -65,51 +60,48 @@ backend/
 
 Endpoints
 
-GET /: Retorna "Hello World!" (teste inicial)
-POST /auth/login: Autentica um usuário e retorna um token JWT (em desenvolvimento)
+GET /: Retorna "Hello World!" (teste inicial).
+POST /auth/login: Autentica um usuário e retorna um token JWT (em desenvolvimento).
 Mais endpoints serão adicionados conforme o desenvolvimento avança.
 
 Desenvolvimento
 
-Criar Modelos Sequelize:
-npx sequelize-cli model:generate --name User --attributes username:string,password:string
-
-
-Adicionar Endpoints:
-
-Edite os arquivos em src/auth/ ou crie novos módulos com nest g module nome-do-modulo.
-
-
-Testes:
-
-Escreva testes em src/**/*.spec.ts e execute com npm run test.
-
-
-
-Solução de Problemas
-
-Erro SequelizeConnectionError:
-
-Verifique se src/app.module.ts está configurado para SQLite:SequelizeModule.forRoot({
+Criar Modelos Sequelize:Configure modelos diretamente no código com @nestjs/sequelize (ex.: User com username e password).Exemplo em src/app.module.ts:
+SequelizeModule.forRoot({
   dialect: 'sqlite',
   storage: './database.sqlite',
   autoLoadModels: true,
   synchronize: true,
 })
 
+Adicionar Endpoints:Crie novos módulos com:
+nest g module nome-do-modulo
 
+Testes:Escreva testes em src/**/*.spec.ts e execute com:
+npm run test
 
+Linting e Formatação
 
-Dependências incorretas:
+ESLint: Configurado com @typescript-eslint para TypeScript.
+Prettier: Garante formatação consistente.npm run lint
+npm run lint:fix
+npm run format
 
-Limpe o ambiente e reinstale:npm cache clean --force
+Solução de Problemas
+
+Erro SequelizeConnectionError:Verifique se src/app.module.ts está configurado para SQLite:
+SequelizeModule.forRoot({
+  dialect: 'sqlite',
+  storage: './database.sqlite',
+  autoLoadModels: true,
+  synchronize: true,
+})
+
+Dependências incorretas:Limpe o ambiente e reinstale:
+npm cache clean --force
 Remove-Item -Recurse -Force node_modules
 Remove-Item -Force package-lock.json
 npm install
-
-
-
-
 
 Contato
 
