@@ -32,9 +32,11 @@ export default [
     },
   },
   {
-    files: ['**/*.spec.ts', '**/*.test.ts'],
+    files: ['test/**/*.ts', '**/*.spec.ts', '**/*.test.ts'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
     },
   },
 ];
