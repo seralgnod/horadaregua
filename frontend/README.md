@@ -1,107 +1,106 @@
-Frontend - Hora da Régua
-O frontend do Hora da Régua é uma interface web construída com Vite, React, TypeScript, e Tailwind CSS, projetada para interagir com a API REST do backend, permitindo que clientes agendem horários e barbeiros gerenciem suas agendas. Configurado com ESLint e Prettier para linting e formatação.
+Backend - Hora da Régua
+O backend do Hora da Régua é uma API REST construída com NestJS, utilizando Sequelize com SQLite para persistência de dados, autenticação com JWT e Passport, e validação com TypeScript. Configurado com ESLint e Prettier para linting e formatação.
 Tecnologias
 
-React: 18.3.1
+NestJS: 10.4.16
+Sequelize: 6.37.7
+SQLite: 5.1.7
+JWT: Autenticação com @nestjs/jwt@10.2.0
+Passport: @nestjs/passport@10.0.3
 TypeScript: 5.6.3
-Vite: 6.3.5
-Tailwind CSS: 3.4.14
 Node.js: 20.19.2
-npm: 10.x.x (ou superior)
 
 Pré-requisitos
 
 Node.js: v20.19.2
 npm: v10.x.x (ou superior)
 PowerShell: Para executar comandos
-Backend rodando em http://localhost:3000 (consulte backend/README.md)
 
 Instalação
 
-Navegue até o diretório do frontend:
-cd frontend
+Navegue até o diretório do backend:cd backend
 
-Instale as dependências:
-npm install
+Instale as dependências:npm install
 
-Configure as variáveis de ambiente (se necessário, crie um arquivo .env):
-echo VITE_API_URL=http://localhost:3000 > .env
+Configure o arquivo .env:echo JWT_SECRET=sua-chave-secreta-muito-longa-e-unica-1234567890 > .env
 
-Executando o Frontend
+Executando o Backend
+Inicie o servidor em modo de desenvolvimento:
+npm run start:dev
 
-Inicie o servidor de desenvolvimento:
-npm run dev
-
-A interface estará disponível em http://localhost:5173.
+A API estará disponível em http://localhost:3000.
+Verifique se o banco de dados SQLite (database.sqlite) foi criado:
+dir
 
 Scripts Disponíveis
 
-Iniciar: npm run dev
 Build: npm run build
+Formatar código: npm run format
+Iniciar em produção: npm run start:prod
+Executar testes: npm run test
 Lint: npm run lint
 Lint com correção: npm run lint:fix
-Formatar código: npm run format
-Preview: npm run preview
 
 Estrutura do Código
-frontend/
+backend/
 ├── src/
-│   ├── components/     # Componentes React reutilizáveis
-│   ├── pages/          # Páginas da aplicação (ex.: Login, Agendamento)
-│   ├── App.tsx         # Componente principal
-│   ├── main.tsx        # Entrada da aplicação
+│   ├── auth/           # Módulo de autenticação (JWT, Passport)
+│   ├── app.module.ts   # Módulo principal
+│   ├── app.controller.ts # Controlador inicial
+│   ├── main.ts         # Entrada da aplicação
+├── database.sqlite      # Banco de dados SQLite
 ├── .env                # Variáveis de ambiente
 ├── package.json        # Dependências e scripts
-├── vite.config.ts      # Configuração do Vite
-├── tailwind.config.js  # Configuração do Tailwind CSS
 ├── README.md           # Este arquivo
 
-Integração com o Backend
-O frontend se comunica com a API em http://localhost:3000. Principais endpoints (em desenvolvimento):
+Endpoints
 
-POST /auth/login: Autentica o usuário e retorna um token JWT.
-Mais endpoints serão consumidos conforme implementados no backend.
+GET /: Retorna "Hello World!" (teste inicial).
+POST /auth/login: Autentica um usuário e retorna um token JWT (em desenvolvimento).
+Mais endpoints serão adicionados conforme o desenvolvimento avança.
 
 Desenvolvimento
 
-Criar Componentes:Adicione componentes em src/components/ ou páginas em src/pages/.
+Criar Modelos Sequelize:Configure modelos diretamente no código com @nestjs/sequelize (ex.: User com username e password). Exemplo em src/app.module.ts:SequelizeModule.forRoot({
+  dialect: 'sqlite',
+  storage: './database.sqlite',
+  autoLoadModels: true,
+  synchronize: true,
+})
 
-Chamar a API:Use fetch ou uma biblioteca como Axios (instale com npm install axios):
-const login = async (username: string, password: string) => {
-  return fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password }),
-  });
-};
+Adicionar Endpoints:Crie novos módulos com:nest g module nome-do-modulo
 
-Estilização:Use Tailwind CSS em classes diretamente nos componentes.
+Testes:Escreva testes em src/**/*.spec.ts e execute com:npm run test
 
-Linting e Formatação:
-npm run lint
+Linting e Formatação
+
+ESLint: Configurado com @typescript-eslint para TypeScript.
+Prettier: Garante formatação consistente.npm run lint
 npm run lint:fix
 npm run format
 
+Notas sobre Dependências
+
+O projeto usa bcrypt (para criptografia de senhas) e sqlite3 (para o banco de dados SQLite), que possuem subdependências necessárias para compilação nativa:
+are-we-there-yet
+gauge
+npmlog
+
+Essas subdependências são requeridas por @mapbox/node-pre-gyp (usado por bcrypt) e node-gyp (usado por sqlite3) e não podem ser removidas sem substituir os pacotes principais.
+
 Solução de Problemas
 
-Erro de conexão com a API:
+Erro SequelizeConnectionError:Verifique se src/app.module.ts está configurado para SQLite:SequelizeModule.forRoot({
+  dialect: 'sqlite',
+  storage: './database.sqlite',
+  autoLoadModels: true,
+  synchronize: true,
+})
 
-Verifique se o backend está rodando (http://localhost:3000).
-Confirme a variável VITE_API_URL no .env.
-
-Erro de linting:
-
-Execute npm run lint:fix ou corrija manualmente.
-Verifique o arquivo .prettierrc para consistência.
-
-Dependências incorretas:Limpe o ambiente e reinstale:
-npm cache clean --force
+Dependências incorretas:Limpe o ambiente e reinstale:npm cache clean --force
 Remove-Item -Recurse -Force node_modules
 Remove-Item -Force package-lock.json
 npm install
-
-Problemas com Vite 6.3.5:Reverter para uma versão estável, se necessário:
-npm install vite@5.4.8
 
 Contato
 
