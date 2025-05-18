@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend/database.sqlite:/app/database.sqlite
+      - ./backend/.env:/app/.env
+    depends_on:
+      - redis
+      - rabbitmq
+    networks:
+      - horadaregua-network
+    environment:
+      - NODE_ENV=production
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend/.env:/app/.env
+    depends_on:
+      - backend
+    networks:
+      - horadaregua-network
+    environment:
+      - VITE_API_URL=http://backend:3000
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --requirepass CR7nohoradaregua
+    networks:
+      - horadaregua-network
+
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+    networks:
+      - horadaregua-network
+
+volumes:
+  redis-data:
+  rabbitmq-data:
+
+networks:
+  horadaregua-network:
+    driver: bridge

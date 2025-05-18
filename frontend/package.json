@@ -9,7 +9,7 @@
     "lint": "eslint src --ext .ts,.tsx",
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
     "format": "prettier --write src/**/*.{ts,tsx}",
-    "preview": "vite preview"
+    "preview": "vite preview --port 5173"  
   },
   "dependencies": {
     "react": "^18.3.1",

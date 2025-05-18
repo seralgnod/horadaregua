@@ -1,10 +1,26 @@
-node_modules/
-.env
-database.sqlite
-dist/
-build/
-.DS_Store
+# Arquivos e diretórios gerados pelo Docker
 *.log
-.vscode/*
-!.vscode/extensions.json
+docker-compose.override.yml
+
+# Volumes do Docker
+redis-data/
+rabbitmq-data/
+
+# Arquivos de ambiente sensíveis
+.env
+.env.local
+.env.development
+.env.production
+
+# Arquivos temporários e de cache
+.DS_Store
+*.swp
+*.bak
+*.tmp
+
+# Diretórios de configuração local
+.vscode/
 .idea/
+
+# Arquivos de log do npm
+npm-debug.log

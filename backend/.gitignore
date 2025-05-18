@@ -1,59 +1,33 @@
-# Compiled output
-/dist
-/node_modules
-/build
+# Dependências
+node_modules/
+npm-debug.log
+yarn-error.log
 
-# Logs
-logs
+# Arquivos de build
+dist/
 *.log
-npm-debug.log*
-pnpm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
 
-# OS
-.DS_Store
-
-# Tests
-/coverage
-/.nyc_output
-
-# IDEs and editors
-/.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-
-# dotenv environment variable files
-.env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
-
-# SQLite database
+# Banco de dados local
 database.sqlite
 
-# temp directory
-.temp
-.tmp
+# Arquivos de ambiente sensíveis
+.env
+.env.local
+.env.development
+.env.production
 
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
+# Arquivos temporários
+.DS_Store
+*.swp
+*.bak
+*.tmp
 
-# Diagnostic reports
-report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+# Configurações de IDE
+.vscode/
+.idea/
+
+# Arquivos de cobertura de teste
+coverage/
+
+# Arquivos de cache do NestJS
+.cache/
